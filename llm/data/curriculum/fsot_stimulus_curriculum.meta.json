@@ -1,0 +1,35 @@
+{
+  "path": "C:\\Users\\damia\\Desktop\\fsot 2.1 llm\\llm\\data\\curriculum\\fsot_stimulus_curriculum.jsonl",
+  "n_total": 202,
+  "n_base": 79,
+  "n_stimulus": 123,
+  "plan": [
+    {
+      "pack": "arc_easy",
+      "dose": 53,
+      "n_rows": 53,
+      "modes": [
+        "mcq_letter_collapse_to_D"
+      ],
+      "dominant_mode": 4
+    },
+    {
+      "pack": "mmlu",
+      "dose": 44,
+      "n_rows": 44,
+      "modes": [
+        "mcq_letter_collapse_to_D"
+      ],
+      "dominant_mode": 4
+    },
+    {
+      "pack": "gsm8k",
+      "dose": 23,
+      "n_rows": 23,
+      "modes": [
+        "math_chain_misread_or_arithmetic"
+      ],
+      "dominant_mode": 4
+    }
+  ]
+}

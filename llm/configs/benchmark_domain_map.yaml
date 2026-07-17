@@ -1,0 +1,242 @@
+# FSOT benchmark → domain + D_eff allocation (preregistered)
+# Same problem class, different folds of the medium — not separate ontologies.
+# Routing uses this map; pathway adapters bind to pathway_key.
+
+version: "1.0"
+authority: "I:/FSOT-Physical-Archive + D:/training data packs"
+rule: >
+  Every external benchmark is an observation regime of FSOT.
+  Allocate pack → lean_domain + D_eff + pathway_key + emission.
+  Context routing injects fold metadata; adapter load uses pathway_key.
+  Never train all packs into one shared LoRA without isolation.
+
+# Medium reference: D_eff in [4, 25]; 25 = full fluid medium
+# pathway_key ∈ {ontology, math, mcq, code}  (isolated LoRA banks)
+
+benchmarks:
+  # --- Arithmetic / formal quantity ---
+  gsm8k_test:
+    pack_id: gsm8k_test
+    display: GSM8K (test)
+    lean_domain: mathematical
+    archive_cluster: base_mathematics
+    D_eff: 10.0
+    pathway_key: math
+    emission: chain_hash_number   # #### n
+    tags: [math, arithmetic, multi_step]
+    route_cues:
+      - grade-school math
+      - "####"
+      - gsm8k
+      - "Problem:"
+    memory_mode: minimal
+    notes: "Quantity coupling; thin D_eff — discrete steps, not full ontology."
+
+  gsm8k_train:
+    pack_id: gsm8k_train
+    display: GSM8K (train)
+    lean_domain: mathematical
+    D_eff: 10.0
+    pathway_key: math
+    emission: chain_hash_number
+    tags: [math, train]
+    route_cues: [gsm8k, grade-school math]
+    memory_mode: minimal
+
+  math_500:
+    pack_id: math_500
+    display: MATH-500
+    lean_domain: mathematical
+    D_eff: 14.0
+    pathway_key: math
+    emission: chain_hash_number
+    tags: [math, contest]
+    route_cues: [contest math, MATH-500, latex]
+    memory_mode: minimal
+    notes: "Higher D_eff than GSM8K — more symbolic structure."
+
+  # --- Code reification ---
+  humaneval:
+    pack_id: humaneval
+    display: HumanEval
+    lean_domain: mathematical   # formal syntax / executable structure
+    archive_cluster: ai_coherence
+    D_eff: 8.0
+    pathway_key: code
+    emission: python_function
+    tags: [code, synthesis]
+    route_cues:
+      - complete the following python
+      - humaneval
+      - "def "
+      - entry_point
+    memory_mode: minimal
+    notes: "Executable reification; lower D_eff — discrete formal channel."
+
+  mbpp:
+    pack_id: mbpp
+    display: MBPP
+    lean_domain: mathematical
+    D_eff: 8.5
+    pathway_key: code
+    emission: python_function
+    tags: [code]
+    route_cues: [mbpp, python problem]
+    memory_mode: minimal
+
+  # --- Science / multi-choice (measurement of option space) ---
+  arc_easy_val:
+    pack_id: arc_easy_val
+    display: ARC-Easy
+    lean_domain: biological      # grade science cross-cuts; use scientific proxy
+    archive_cluster: contested_science_qa
+    D_eff: 15.0
+    pathway_key: mcq
+    emission: letter_abcd
+    tags: [science, mcq]
+    route_cues:
+      - science multiple-choice
+      - arc-easy
+      - reply with only the letter
+    memory_mode: minimal
+    notes: "Option measurement under observed=True; mid-high D_eff."
+
+  arc_challenge_val:
+    pack_id: arc_challenge_val
+    display: ARC-Challenge
+    lean_domain: biological
+    D_eff: 17.0
+    pathway_key: mcq
+    emission: letter_abcd
+    tags: [science, mcq, hard]
+    route_cues: [arc-challenge, science multiple-choice]
+    memory_mode: minimal
+
+  mmlu_val:
+    pack_id: mmlu_val
+    display: MMLU validation
+    lean_domain: consciousness   # multi-domain knowledge atlas
+    archive_cluster: multi_domain_knowledge
+    D_eff: 18.0
+    pathway_key: mcq
+    emission: letter_abcd
+    tags: [knowledge, mcq, multi_domain]
+    route_cues:
+      - multiple-choice knowledge
+      - mmlu
+      - subject
+    memory_mode: minimal
+    notes: "Near-full medium slice — many domains in one emission form."
+
+  mmlu_test:
+    pack_id: mmlu_test
+    display: MMLU test
+    lean_domain: consciousness
+    D_eff: 18.0
+    pathway_key: mcq
+    emission: letter_abcd
+    tags: [knowledge, mcq]
+    route_cues: [mmlu]
+    memory_mode: minimal
+
+  mmlu_pro:
+    pack_id: mmlu_pro
+    display: MMLU-Pro
+    lean_domain: consciousness
+    D_eff: 20.0
+    pathway_key: mcq
+    emission: letter_abcd
+    tags: [knowledge, mcq, hard]
+    route_cues: [mmlu-pro, mmlu_pro]
+    memory_mode: minimal
+
+  mmlu_fsot_bench:
+    pack_id: mmlu_fsot_bench
+    display: MMLU (FSOT_Benchmarks)
+    lean_domain: consciousness
+    D_eff: 18.0
+    pathway_key: mcq
+    emission: letter_abcd
+    tags: [knowledge, mcq]
+    route_cues: [mmlu]
+    memory_mode: minimal
+
+  # --- Commonsense / linguistic ---
+  hellaswag_val:
+    pack_id: hellaswag_val
+    display: HellaSwag
+    lean_domain: consciousness
+    D_eff: 12.0
+    pathway_key: mcq
+    emission: ending_choice
+    tags: [commonsense, linguistic]
+    route_cues: [hellaswag, plausible continuation, endings]
+    memory_mode: minimal
+
+  winogrande_val:
+    pack_id: winogrande_val
+    display: Winogrande
+    lean_domain: consciousness
+    D_eff: 11.0
+    pathway_key: mcq
+    emission: binary_option
+    tags: [commonsense, coref]
+    route_cues: [winogrande, coreference]
+    memory_mode: minimal
+
+  truthfulqa_val:
+    pack_id: truthfulqa_val
+    display: TruthfulQA
+    lean_domain: consciousness
+    D_eff: 16.0
+    pathway_key: mcq
+    emission: free_or_mc
+    tags: [truth, knowledge]
+    route_cues: [truthfulqa, truthful]
+    memory_mode: minimal
+
+  # --- Hard reasoning ---
+  bbh_mix:
+    pack_id: bbh_mix
+    display: BIG-Bench Hard mix
+    lean_domain: mathematical
+    D_eff: 13.0
+    pathway_key: math
+    emission: free_reason
+    tags: [reasoning, multi_step]
+    route_cues: [bbh, big-bench, multi-step reasoning]
+    memory_mode: minimal
+
+  ifeval:
+    pack_id: ifeval
+    display: IFEval
+    lean_domain: consciousness
+    D_eff: 9.0
+    pathway_key: ontology
+    emission: constrained_instruction
+    tags: [instruction, format]
+    route_cues: [ifeval, instruction following]
+    memory_mode: minimal
+
+# Pathway key → default D_eff locus (adapter bank geometry)
+pathways:
+  ontology:
+    D_eff: 25.0
+    lean_domain: consciousness
+    role: "FSOT seed/scalar/observer meta"
+  math:
+    D_eff: 10.0
+    lean_domain: mathematical
+    role: "quantity + symbolic computation"
+  mcq:
+    D_eff: 16.0
+    lean_domain: consciousness
+    role: "option-space measurement"
+  code:
+    D_eff: 8.0
+    lean_domain: mathematical
+    role: "executable reification"
+
+# Context prefix template (injected for routing — fold metadata, not free prompt noise)
+context_prefix_template: |
+  [FSOT_ROUTE pack={pack_id} domain={lean_domain} D_eff={D_eff} pathway={pathway_key} emission={emission} observed=true]

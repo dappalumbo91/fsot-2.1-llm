@@ -1,0 +1,35 @@
+{
+  "authority": "I:\\FSOT-Physical-Archive\\02_FSOT-2.1-Lean-Full\\vendor\\fsot_compute.py",
+  "python_cases": [
+    {
+      "case": {
+        "D_eff": 25.0,
+        "observed": false
+      },
+      "python_mpmath_as_float": -0.5024559462100433
+    },
+    {
+      "case": {
+        "D_eff": 25.0,
+        "observed": true
+      },
+      "python_mpmath_as_float": 0.8791285168040015
+    },
+    {
+      "case": {
+        "D_eff": 12.0,
+        "observed": false,
+        "recent_hits": 0.5,
+        "N": 64.0
+      },
+      "python_mpmath_as_float": -66.0260962298685
+    }
+  ],
+  "reference_S_D25_unobserved": "-0.50245594621004332083298044769232221368558717436863",
+  "reference_S_D25_observed": "0.87912851680400154465920637672998221133910467871353",
+  "K": "0.42022166416069669404357559272383420120358143238861",
+  "C_factor": "0.28760015181918396646257723332531607604357272537045",
+  "rust_hello_present": true,
+  "cpp_hello_present": true,
+  "note": "f64 ports (C++/Rust) matched gold float(S) to ~1e-15 on scaffold smoke; mpmath remains formal research authority."
+}

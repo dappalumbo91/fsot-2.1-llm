@@ -1,0 +1,8 @@
+{
+  "schema": "fsot_full_ft_registry_v1",
+  "ontology": "FSOT 2.1",
+  "rule": "Rollback on anti-poison failure; never grow N-params as the fix",
+  "github": "https://github.com/dappalumbo91/fsot-2.1-llm",
+  "active": null,
+  "versions": []
+}

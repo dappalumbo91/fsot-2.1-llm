@@ -1,0 +1,17 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe",
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}/llm/python",
+    "${workspaceFolder}/fsot_core/python"
+  ],
+  "files.exclude": {
+    "**/__pycache__": true,
+    "fsot_core/rust/target": true,
+    "fsot_core/cpp/build": true
+  },
+  "terminal.integrated.env.windows": {
+    "FSOT_LLM_ROOT": "${workspaceFolder}",
+    "FSOT_ARCHIVE_ROOT": "I:\\FSOT-Physical-Archive",
+    "FSOT_PORTABLE": "1"
+  }
+}

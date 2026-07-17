@@ -1,0 +1,46 @@
+# FSOT 2.1 LLM — preferred small-model ladder (local, smaller first)
+# Ontology: model size is observer amplitude, not intelligence.
+
+fsot:
+  medium_dimensions: 25
+  seeds: [pi, e, phi, gamma, G_catalan]
+  free_parameters: 0
+  authority: "I:/FSOT-Physical-Archive/02_FSOT-2.1-Lean-Full/vendor/fsot_compute.py"
+
+hardware:
+  gpu: "NVIDIA GeForce RTX 5070"
+  vram_gb: 12
+  system_ram_gb: 32
+
+# Research order: try smaller before larger
+model_ladder:
+  - id: qwen2.5-0.5b
+    hf_id: Qwen/Qwen2.5-0.5B-Instruct
+    params_b: 0.5
+    notes: "Always-fit first contact model"
+  - id: qwen2.5-1.5b
+    hf_id: Qwen/Qwen2.5-1.5B-Instruct
+    params_b: 1.5
+    notes: "Primary research target"
+  - id: phi-3.5-mini
+    hf_id: microsoft/Phi-3.5-mini-instruct
+    params_b: 3.8
+    quant: "4bit"
+    notes: "Stretch under 4-bit; baseline to beat when possible"
+
+inference:
+  dtype: auto
+  device_map: auto
+  max_new_tokens: 256
+  temperature: 0.7
+
+routing:
+  enabled: true
+  description: >
+    Layer/token loci map to ObserverFold (D_eff, recent_hits, observed).
+    Attention bias from seed-derived S * C_factor — no learned scale fishing.
+
+kill_criteria_draft:
+  - small_beats_large_on_fsot_suite
+  - same_score_at_half_params_or_vram
+  - ledger_json_required_for_claims

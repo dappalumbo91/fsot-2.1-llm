@@ -1,0 +1,17 @@
+{
+  "id": "damianpalumbo/fsot-2-1-public-benchmark",
+  "title": "FSOT 2.1 Public Benchmark",
+  "code_file": "fsot_public_benchmark.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": false,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": [
+    "damianpalumbo/fsot-21-instruct-05b/PyTorch/transformers/5"
+  ]
+}

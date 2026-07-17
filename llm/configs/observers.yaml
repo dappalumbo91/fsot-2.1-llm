@@ -1,0 +1,60 @@
+# FSOT 2.1 LLM — dual observers (vision+code primary, code micro companion)
+# Ontology: multimodal is not optional for visual-spectrum kill criteria.
+
+fsot:
+  medium_dimensions: 25
+  seeds: [pi, e, phi, gamma, G_catalan]
+  free_parameters: 0
+  authority: "I:/FSOT-Physical-Archive/02_FSOT-2.1-Lean-Full/vendor/fsot_compute.py"
+
+hardware:
+  gpu: "NVIDIA GeForce RTX 5070"
+  vram_gb: 12
+  system_ram_gb: 32
+
+observers:
+  primary_multimodal:
+    id: qwen2.5-vl-3b
+    hf_id: Qwen/Qwen2.5-VL-3B-Instruct
+    role: "vision + language + code-in-context"
+    modalities: [image, text, code]
+    dtype: bfloat16
+    device_map: auto
+    # Qwen2.5-VL pixel budget — keep under VRAM while preserving spectrum detail
+    min_pixels: 256
+    max_pixels: 1280
+    notes: "Primary lab observer for visual spectrum solidification"
+
+  code_companion:
+    id: qwen2.5-coder-0.5b
+    hf_id: Qwen/Qwen2.5-Coder-0.5B-Instruct
+    role: "executable reification / pure code"
+    modalities: [text, code]
+    dtype: bfloat16
+    device_map: auto
+    notes: "Tiny FSOT code channel; pairs with vision primary"
+
+  micro_vision_optional:
+    id: smolvlm-500m
+    hf_id: HuggingFaceTB/SmolVLM-500M-Instruct
+    role: "extreme-small visual ablation"
+    modalities: [image, text]
+    enabled: false
+
+# Legacy text-only ladder still available for ablations
+text_ablation:
+  - Qwen/Qwen2.5-0.5B-Instruct
+  - Qwen/Qwen2.5-1.5B-Instruct
+
+kill_criteria:
+  visual_form: true
+  pixel_scalar_consistency: true
+  code_reification: true
+  efficiency_vs_larger_baseline: true
+
+routing:
+  vision_spectrum: true
+  code_observer: true
+  description: >
+    Pixels → preregistered spectrum folds → ScalarInput.
+    Code tokens → same spine with observed=true during execution feedback.

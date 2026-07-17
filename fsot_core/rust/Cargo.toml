@@ -1,0 +1,17 @@
+[package]
+name = "fsot_core"
+version = "0.1.0"
+edition = "2021"
+description = "FSOT 2.1 scalar engine — Rust obligation-safe path for LLM observers"
+license = "Apache-2.0"
+authors = ["Damian Arthur Palumbo"]
+
+[lib]
+name = "fsot_core"
+path = "src/lib.rs"
+
+[[bin]]
+name = "hello_fsot"
+path = "src/bin/hello_fsot.rs"
+
+[dependencies]

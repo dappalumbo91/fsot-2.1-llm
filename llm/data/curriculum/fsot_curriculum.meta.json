@@ -1,0 +1,14 @@
+{
+  "count": 79,
+  "archive": {
+    "ok": true,
+    "archive_root": "I:\\FSOT-Physical-Archive",
+    "lean_hub": "I:\\FSOT-Physical-Archive\\02_FSOT-2.1-Lean-Full",
+    "compute_path": "I:\\FSOT-Physical-Archive\\02_FSOT-2.1-Lean-Full\\vendor\\fsot_compute.py",
+    "compute_exists": true,
+    "intrinsic_llm_vendor": true,
+    "intrinsic_llm_benchmark": true,
+    "notes": []
+  },
+  "path": "C:\\Users\\damia\\Desktop\\fsot 2.1 llm\\llm\\data\\curriculum\\fsot_curriculum.jsonl"
+}
