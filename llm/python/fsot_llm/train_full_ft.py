@@ -41,8 +41,9 @@ def _build_math_curriculum(stamp: str, math_extra: int) -> Path:
     if math_generator_root().is_dir():
         return build_math_rules_curriculum(
             gsm8k_n=max(math_extra, 200),
-            rule_n=max(60, math_extra // 4),
+            rule_n=0,
             stamp=f"fullft_{stamp}",
+            truth_only=True,
         )
     # fallback scrubbed GSM8K only
     from fsot_llm.curriculum import FSOT_SYSTEM, _chat

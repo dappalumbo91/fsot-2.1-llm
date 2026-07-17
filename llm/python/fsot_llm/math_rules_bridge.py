@@ -248,24 +248,56 @@ def tag_rules_for_problem(question: str, rules: list[dict[str, Any]]) -> list[di
     return tagged[:8]
 
 
-def build_gsm8k_rule_guided_rows(
+def _certify_gsm8k_answer(full: str, gold: str) -> bool:
+    """FSOT measurement: assistant #### must equal gold quantity."""
+    from fsot_llm.external_data import extract_final_number
+
+    if "####" not in full:
+        return False
+    pred = extract_final_number(full)
+    if pred is None or not gold:
+        return False
+    g = str(gold).replace(",", "").strip()
+    p = str(pred).replace(",", "").strip()
+    if g == p:
+        return True
+    try:
+        return abs(float(g) - float(p)) < 1e-6
+    except ValueError:
+        return False
+
+
+def build_gsm8k_truth_rows(
     *,
     limit: int = 200,
     seed: int = 42,
 ) -> list[dict[str, Any]]:
-    """Full GSM8K CoT answers + rule card / cited rule ids in the user prompt."""
-    rules = load_gsm8k_rules(max_rules=100)
+    """
+    TRUTH-ONLY GSM8K: official CoT as assistant target — no rule theater.
+
+    - Assistant = raw train answer (measurement-true information wave)
+    - User = thin FSOT_ROUTE + emission instruction only
+    - Reject if #### does not certificate to gold
+    - Never prefix 'Using rules AR-…' (that was decorative suction / theater)
+    """
     alloc = allocation_for_pack("gsm8k_test")
-    pool = load_pack_rows("gsm8k_train", limit=min(max(limit * 3, 600), 2500))
+    pool_cap = min(max(limit * 3, 800), 8000)
+    pool = load_pack_rows("gsm8k_train", limit=pool_cap)
     rnd = random.Random(seed)
     rnd.shuffle(pool)
-    banned = ("read quantities carefully", "brief answer only")
+    banned = (
+        "read quantities carefully",
+        "brief answer only",
+        "using rules ar-",
+        "```",
+        "sympy",
+    )
     rows: list[dict[str, Any]] = []
 
     for row in pool:
         if len(rows) >= limit:
             break
-        q = row.get("question") or ""
+        q = (row.get("question") or "").strip()
         gold = extract_gsm8k_gold(row.get("answer") or "")
         full = (row.get("answer") or "").strip()
         if not q or not gold or not full:
@@ -273,59 +305,60 @@ def build_gsm8k_rule_guided_rows(
         low = full.lower()
         if any(b in low for b in banned):
             continue
-        if "####" not in full:
-            continue
         body = full.split("####")[0].strip()
         if len(body) < 40:
             continue
-
-        tagged = tag_rules_for_problem(q, rules)
-        rule_lines = "\n".join(f"- {rule_to_card_line(r)}" for r in tagged)
-        # Prefix assistant CoT with rule citations (does not change #### gold)
-        rule_header = "Rules in force:\n" + "\n".join(
-            f"- {r.get('id')}: {r.get('name')}" for r in tagged[:5]
-        )
-        ans = f"{rule_header}\n\n{full}"
-
+        if not _certify_gsm8k_answer(full, gold):
+            continue
+        # Prefer chains with explicit calc annotations when present
         user = inject_route_context(
-            "Solve the grade-school word problem with pure arithmetic (no Python, "
-            "no code blocks). Use valid math rules for each step. "
-            "Show brief step-by-step reasoning with <<calc=result>> when helpful. "
-            "Never use one-line stubs. End with exactly one line: #### <number>\n\n"
-            f"Suggested rules:\n{rule_lines}\n\n"
+            "Solve the grade-school math problem with pure arithmetic "
+            "(no Python, no code). Show step-by-step reasoning with "
+            "<<calc=result>> when helpful. "
+            "Never use one-line stubs. "
+            "End with exactly one line: #### <number>\n\n"
             f"Problem: {q}",
             alloc,
         )
-        # Assistant stays official GSM8K CoT (rule header optional, short)
-        rule_ids = ", ".join(r.get("id", "") for r in tagged[:4])
-        ans = f"Using rules {rule_ids}.\n{full}"
-        rows.append(_chat(user, ans, FSOT_SYSTEM))
+        # ASSISTANT = official GSM8K answer only (truth)
+        rows.append(_chat(user, full, FSOT_SYSTEM))
 
     return rows
+
+
+# Back-compat alias — must NOT reintroduce theater
+def build_gsm8k_rule_guided_rows(
+    *,
+    limit: int = 200,
+    seed: int = 42,
+) -> list[dict[str, Any]]:
+    return build_gsm8k_truth_rows(limit=limit, seed=seed)
 
 
 def build_math_rules_curriculum(
     *,
     gsm8k_n: int = 200,
-    rule_n: int = 120,
-    stamp: str = "rules",
+    rule_n: int = 0,
+    stamp: str = "truth",
+    truth_only: bool = True,
 ) -> Path:
-    """Write mixed rule+GSM8K curriculum jsonl for pathway deepen.
-
-    GSM8K rows dominate (word-problem emission ####). Rule drills are a
-    minority so the 0.5B coder base does not collapse into Python/SymPy mode.
     """
-    # Keep rule drills light — format fidelity for #### matters more than
-    # memorizing the whole rulebook in one wave.
-    rule_cap = min(rule_n, max(40, gsm8k_n // 4))
-    rule_rows = build_rule_curriculum_rows(max_rows=rule_cap)
-    gsm_rows = build_gsm8k_rule_guided_rows(limit=gsm8k_n)
-    # Drop any assistant that looks like code-first solving
+    Math fold curriculum.
+
+    Default truth_only=True: official GSM8K CoT only (no rule-prefix theater).
+    rule_n>0 only adds SEPARATE rule-drill chats (not mixed into GSM8K targets).
+    """
+    gsm_rows = build_gsm8k_truth_rows(limit=gsm8k_n)
+    # Hard reject theater / uncertified
     def _ok_gsm(row: dict[str, Any]) -> bool:
         msgs = row.get("messages") or []
         if not msgs:
             return False
         content = str(msgs[-1].get("content") or "")
+        if content.lower().startswith("using rules"):
+            return False
+        if "rules in force" in content.lower():
+            return False
         if "####" not in content:
             return False
         if "```" in content or "sympy" in content.lower():
@@ -335,7 +368,12 @@ def build_math_rules_curriculum(
         return True
 
     gsm_rows = [r for r in gsm_rows if _ok_gsm(r)]
-    rows = gsm_rows + rule_rows  # GSM first for implicit priority
+    rule_rows: list[dict[str, Any]] = []
+    if not truth_only and rule_n > 0:
+        rule_cap = min(rule_n, max(20, gsm8k_n // 8))
+        rule_rows = build_rule_curriculum_rows(max_rows=rule_cap)
+
+    rows = list(gsm_rows) + list(rule_rows)
     random.Random(11).shuffle(rows)
 
     out = (
@@ -344,7 +382,7 @@ def build_math_rules_curriculum(
         / "data"
         / "curriculum"
         / "pathways"
-        / f"math_rules_{stamp}.jsonl"
+        / f"math_truth_{stamp}.jsonl"
     )
     out.parent.mkdir(parents=True, exist_ok=True)
     with out.open("w", encoding="utf-8") as f:
@@ -352,11 +390,12 @@ def build_math_rules_curriculum(
             f.write(json.dumps(r, ensure_ascii=False) + "\n")
 
     meta = {
+        "mode": "truth_only_gsm8k" if truth_only or rule_n == 0 else "truth_plus_rule_drills",
+        "theater_forbidden": True,
         "n_rows": len(rows),
         "n_rule_rows": len(rule_rows),
         "n_gsm8k_rows": len(gsm_rows),
-        "math_generator": str(math_generator_root()),
-        "rule_docs": list(GSM8K_RULE_DOCS),
+        "certify_hash_eq_gold": True,
         "path": str(out),
     }
     out.with_suffix(".meta.json").write_text(

@@ -407,13 +407,15 @@ def deepen_pathway(
 
                 mg = math_generator_root()
                 if mg.is_dir():
+                    # TRUTH-ONLY official GSM8K CoT — no rule-prefix theater
                     curriculum = build_math_rules_curriculum(
                         gsm8k_n=max(math_extra, 160),
-                        rule_n=max(80, math_extra // 2),
+                        rule_n=0,
                         stamp=stamp,
+                        truth_only=True,
                     )
                     print(
-                        f"  math curriculum: RULE-GUIDED from {mg} → {curriculum}",
+                        f"  math curriculum: TRUTH-ONLY GSM8K (certified ####) → {curriculum}",
                         flush=True,
                     )
                 else:

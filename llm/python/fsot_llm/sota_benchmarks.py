@@ -178,43 +178,16 @@ def _pack_generate(generate: GenerateFn, pack_id: str) -> GenerateFn:
 def eval_gsm8k(generate: GenerateFn, limit: int = 20) -> dict[str, Any]:
     generate = _pack_generate(generate, 'gsm8k_test')
     rows = load_pack_rows("gsm8k_test", limit=limit)
-    # Optional FSOT Math-generator rule card (constraints on CoT)
-    rule_prefix = ""
-    try:
-        from fsot_llm.math_rules_bridge import (
-            build_compact_rule_card,
-            load_gsm8k_rules,
-            tag_rules_for_problem,
-        )
-
-        _rules = load_gsm8k_rules(max_rules=40)
-        rule_prefix = build_compact_rule_card(_rules, max_lines=10) + "\n\n"
-    except Exception:
-        _rules = []
-        rule_prefix = (
-            "Use pure arithmetic steps (no Python). End with #### <number>.\n\n"
-        )
+    # Thin prompt — measurement emission only (no rule-theater bloat)
     hits = 0
     details = []
     for i, row in enumerate(rows):
         q = row.get("question") or row.get("prompt") or ""
         gold = extract_gsm8k_gold(row.get("answer") or "")
-        tagged = ""
-        if _rules:
-            try:
-                from fsot_llm.math_rules_bridge import tag_rules_for_problem
-
-                ts = tag_rules_for_problem(q, _rules)
-                tagged = "Rules for this problem: " + ", ".join(
-                    f"{t.get('id')}" for t in ts[:5]
-                ) + "\n"
-            except Exception:
-                tagged = ""
         prompt = (
-            f"{rule_prefix}"
-            f"{tagged}"
             "Solve the grade-school math problem with pure arithmetic "
-            "(no code, no Python). Show brief reasoning. "
+            "(no code, no Python). Show brief reasoning with <<calc=result>> "
+            "when helpful. Never use one-line stubs. "
             "End with #### <number> as the final answer.\n\n"
             f"Problem: {q}"
         )
