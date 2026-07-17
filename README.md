@@ -18,6 +18,17 @@ Weights live on disk; **GitHub + `llm/models/full_ft/registry.json`** track hist
 
 See [docs/FSOT_VERSIONING.md](docs/FSOT_VERSIONING.md).
 
+## Memory hierarchy (LTM / STM / process)
+
+Long-term on **disk** (SQLite), short-term in **RAM**, process on **GPU/CPU** one pathway at a time — not the whole knowledge fluid in VRAM.
+
+See [docs/FSOT_MEMORY_HIERARCHY.md](docs/FSOT_MEMORY_HIERARCHY.md).
+
+```powershell
+python -m fsot_llm.memory_hierarchy --seed-bank
+python -m fsot_llm.memory_hierarchy --chat "Solve 2+2. End with #### n" --pack gsm8k_test
+```
+
 ```powershell
 $env:PYTHONPATH = "llm\python"
 python -m fsot_llm.train_full_ft --fold math --epochs 2 --lr 5e-6
