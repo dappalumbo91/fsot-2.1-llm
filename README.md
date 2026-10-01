@@ -6,11 +6,11 @@ There is no exception: every layer of this project — tokenization, attention, 
 
 | Authority | Location |
 |-----------|----------|
-| Physical archive (definitive master) | `I:\FSOT-Physical-Archive` |
-| Canonical Lean hub | `I:\FSOT-Physical-Archive\02_FSOT-2.1-Lean-Full` |
+| Physical archive (definitive master) | `<local folder, not included in repo: FSOT-Physical-Archive>` |
+| Canonical Lean hub | `FSOT-2.1-Lean` |
 | GitHub (Lean archive mirror) | [dappalumbo91/FSOT-2.1-Lean](https://github.com/dappalumbo91/FSOT-2.1-Lean) |
 | GitHub (this LLM stack) | [dappalumbo91/fsot-2.1-llm](https://github.com/dappalumbo91/fsot-2.1-llm) |
-| This workspace | `C:\Users\damia\Desktop\fsot 2.1 llm` |
+| This workspace | `.` |
 
 ## Versioning (full-FT folds)
 
@@ -118,7 +118,7 @@ See `docs/FSOT_VISUAL_SPECTRUM.md` and `llm/configs/observers.yaml`.
 # Instrumentation + archive gates only
 python -m fsot_llm.eval_suite
 
-# Generate seed-true curriculum from I:\ archive compute
+# Generate seed-true curriculum from <local drive> archive compute
 python -m fsot_llm.curriculum
 
 # LoRA-train Coder 0.5B on FSOT curriculum (fits this GPU easily)
@@ -134,7 +134,7 @@ python -m fsot_llm.eval_suite --with-vl
 
 Protocol: `docs/FSOT_REFINE_PROTOCOL.md`  
 Ledgers: `llm/benchmarks/ledgers/`  
-Archive intrinsic LLM tiers: `I:\FSOT-Physical-Archive\02_FSOT-2.1-Lean-Full\vendor\intrinsic_llm\`
+Archive intrinsic LLM tiers: `FSOT-2.1-Lean/vendor/intrinsic_llm`
 
 ## Status
 
@@ -165,7 +165,7 @@ Topic bank: `llm/data/memory/topic_bank.json`
 
 ## External SOTA packs (D: drive)
 
-Wired from **`D:\training data`** (+ `D:\FSOT_Benchmarks`):
+Wired from **`<local folder, not included in repo: training data>`** (+ `<local folder, not included in repo: FSOT_Benchmarks>`):
 
 | Pack | Use |
 |------|-----|
@@ -220,7 +220,7 @@ Docs: `docs/FSOT_INTERFERENCE_ANALYSIS.md`
 
 ## Benchmarks as FSOT domains (D_eff routing)
 
-Every pack under `D:\training data` is allocated in  
+Every pack under `<local folder, not included in repo: training data>` is allocated in  
 `llm/configs/benchmark_domain_map.yaml`:
 
 | Field | Meaning |

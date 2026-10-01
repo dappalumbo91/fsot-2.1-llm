@@ -2,7 +2,7 @@
 
 **Goal:** Take the dual-observer stack (Qwen2.5-VL-3B + Coder-0.5B) and refine it with FSOT until it systematically outperforms larger non-FSOT baselines on preregistered kill criteria.
 
-**Authority:** `I:\FSOT-Physical-Archive` is the verification tool. Desktop is the lab. Never invent constants. Never post-hoc retune folds after a failed gate.
+**Authority:** `<local folder, not included in repo: FSOT-Physical-Archive>` is the verification tool. Desktop is the lab. Never invent constants. Never post-hoc retune folds after a failed gate.
 
 ---
 
@@ -25,7 +25,7 @@ generate_curriculum  →  train (LoRA / small FT)  →  eval_suite  →  archive
 
 | Resource | Path |
 |----------|------|
-| Canonical compute | `I:\...\vendor\fsot_compute.py` |
+| Canonical compute | `<local file, not included in repo: fsot_compute.py>` |
 | Intrinsic LLM panel | `data/intrinsic_llm_validators_benchmark.json` |
 | Panel (desktop wiring) | `data/validators_intrinsic_llm_panel_benchmark.json` |
 | Vendor tier results | `vendor/intrinsic_llm/benchmark_results_final.json` |
@@ -34,7 +34,7 @@ generate_curriculum  →  train (LoRA / small FT)  →  eval_suite  →  archive
 Env (always):
 
 ```powershell
-. I:\FSOT-Physical-Archive\set_fsot_archive_env.ps1
+. <local file, not included in repo: set_fsot_archive_env.ps1>
 . .\scripts\set_env.ps1   # from this workspace
 ```
 

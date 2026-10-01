@@ -26,7 +26,7 @@ llm/models/full_ft/
 ## Commands
 
 ```powershell
-cd "C:\Users\damia\Desktop\fsot 2.1 llm"
+cd "fsot-2.1-llm"
 $env:PYTHONPATH = "llm\python"
 
 # Full-FT math fold (bottom-up from Qwen base)

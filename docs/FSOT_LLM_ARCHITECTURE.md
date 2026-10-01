@@ -39,7 +39,7 @@ Composite (Layer 2): `C_eff, A_bleed, B_in, A_in, suction, chaos, C_factor, K, �
 Scalar: `S = K · (T1 + T2 + T3)` via `ScalarInput` folds.
 
 **Canonical implementation:**  
-`I:\FSOT-Physical-Archive\02_FSOT-2.1-Lean-Full\vendor\fsot_compute.py`  
+`FSOT-2.1-Lean/vendor/fsot_compute.py`  
 SHA gate and Lean formalization live in the archive; this repo **links**, never forks authority.
 
 ---
@@ -105,7 +105,7 @@ Failed gates are ledger events — no post-hoc fold retuning without a new PRED 
 
 | Env var | Meaning |
 |---------|---------|
-| `FSOT_ARCHIVE_ROOT` | `I:\FSOT-Physical-Archive` |
+| `FSOT_ARCHIVE_ROOT` | `<local folder, not included in repo: FSOT-Physical-Archive>` |
 | `FSOT_COMPUTE_PATH` | Canonical `fsot_compute.py` |
 | `FSOT_PORTABLE` | Prefer cache / no live API mutation |
 | `FSOT_LLM_ROOT` | This workspace |
