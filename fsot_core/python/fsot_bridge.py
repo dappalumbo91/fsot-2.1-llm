@@ -6,6 +6,18 @@ fsot_compute.py and expose a stable API for the LLM stack.
 """
 from __future__ import annotations
 
+import os as _os
+from pathlib import Path as _Path
+
+_REPO_ROOT = _Path(__file__).resolve().parents[2]
+
+
+def _fsot_local_path(env, default):
+    """Local path outside the repo: $env if set, else a path relative to the repo root."""
+    _v = _os.environ.get(env, "").strip()
+    return _Path(_v) if _v else _REPO_ROOT / default
+
+
 import importlib.util
 import os
 import sys
@@ -23,7 +35,7 @@ def default_compute_candidates() -> list[Path]:
     if env:
         candidates.append(Path(env))
     archive = os.environ.get(
-        "FSOT_ARCHIVE_ROOT", r"I:\FSOT-Physical-Archive"
+        "FSOT_ARCHIVE_ROOT", _os.fspath(_REPO_ROOT / 'data_external/physical_archive')
     )
     candidates.extend(
         [
@@ -31,7 +43,7 @@ def default_compute_candidates() -> list[Path]:
             / "02_FSOT-2.1-Lean-Full"
             / "vendor"
             / "fsot_compute.py",
-            Path(r"I:\FSOT-Physical-Archive\02_FSOT-2.1-Lean-Full\vendor\fsot_compute.py"),
+            _fsot_local_path('FSOT_2_1_LEAN_ROOT', '../FSOT-2.1-Lean') / 'vendor' / 'fsot_compute.py',
             _WORKSPACE / "third_party" / "fsot_compute.py",
         ]
     )
@@ -63,7 +75,7 @@ def load_fsot_compute(path: Optional[Path] = None) -> ModuleType:
             continue
     raise FileNotFoundError(
         "Could not load canonical fsot_compute.py. "
-        "Set FSOT_COMPUTE_PATH or mount I:\\FSOT-Physical-Archive. "
+        "Set FSOT_COMPUTE_PATH or mount $FSOT_ARCHIVE_ROOT. "
         f"Tried: {[str(x) for x in paths if x]}. Last error: {last_err}"
     )
 

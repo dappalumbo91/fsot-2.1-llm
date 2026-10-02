@@ -27,7 +27,7 @@ llm/kaggle_public_benchmark/
 ### Push & run (from your PC — only uploads the script, compute is on Kaggle)
 
 ```powershell
-cd "C:\Users\damia\Desktop\fsot 2.1 llm"
+cd "fsot-2.1-llm"
 kaggle kernels push -p "llm\kaggle_public_benchmark"
 ```
 

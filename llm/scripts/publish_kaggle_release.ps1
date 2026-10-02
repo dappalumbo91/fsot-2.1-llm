@@ -5,8 +5,8 @@ param(
 )
 $ErrorActionPreference = "Stop"
 $Root = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
-if (-not (Test-Path (Join-Path $Root "llm\models\release\FSOT-2.1-Instruct-0.5B\model.safetensors"))) {
-  $Root = "C:\Users\damia\Desktop\fsot 2.1 llm"
+if ($env:FSOT_LLM_ROOT -and -not (Test-Path (Join-Path $Root "llm\models\release\FSOT-2.1-Instruct-0.5B\model.safetensors"))) {
+  $Root = $env:FSOT_LLM_ROOT
 }
 $Src = Join-Path $Root "llm\models\release\FSOT-2.1-Instruct-0.5B"
 $Pkg = Join-Path $Root "llm\models\release\kaggle_package"

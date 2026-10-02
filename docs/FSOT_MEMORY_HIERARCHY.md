@@ -7,7 +7,7 @@
 
 | Human-scale picture | FSOT | Implementation |
 |---------------------|------|----------------|
-| Long-term memory (mind archive / “soul” ledger of known info) | Persistent waveform of observations | **SQLite LTM** on disk (`D:\FSOT_LLM_Memory` or `llm/data/memory`) |
+| Long-term memory (mind archive / “soul” ledger of known info) | Persistent waveform of observations | **SQLite LTM** on disk (`<local folder, not included in repo: FSOT_LLM_Memory>` or `llm/data/memory`) |
 | Short-term / working memory | Active coupling set + recent_hits | **RAM STM** (deque of turns + retrieved LTM slices) |
 | Immediate process (body / parallel act) | Measurement collapse under `observed` | **GPU/CPU** forward on **one** pathway adapter only |
 | Routing / attention | Domain map D_eff, pathway, emission | `resolve_allocation` + inject `FSOT_ROUTE` |
@@ -40,7 +40,7 @@ user text
 ## CLI
 
 ```powershell
-cd "C:\Users\damia\Desktop\fsot 2.1 llm"
+cd "fsot-2.1-llm"
 $env:PYTHONPATH = "llm\python"
 
 # Status
@@ -60,7 +60,7 @@ python -m fsot_llm.memory_hierarchy --chat "What is 2+2? End with #### n" --pack
 Override LTM location:
 
 ```powershell
-$env:FSOT_LTM_PATH = "I:\FSOT-Physical-Archive\08_Verified-Desktop-Projects\fsot_ltm.sqlite"
+$env:FSOT_LTM_PATH = "<local file, not included in repo: fsot_ltm.sqlite>"
 ```
 
 ## Relation to training

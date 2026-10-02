@@ -1,7 +1,19 @@
 """
-Archive verification bridge — I:\\FSOT-Physical-Archive is the tool of record.
+Archive verification bridge — $FSOT_ARCHIVE_ROOT is the tool of record.
 """
 from __future__ import annotations
+
+import os as _os
+from pathlib import Path as _Path
+
+_REPO_ROOT = _Path(__file__).resolve().parents[3]
+
+
+def _fsot_local_path(env, default):
+    """Local path outside the repo: $env if set, else a path relative to the repo root."""
+    _v = _os.environ.get(env, "").strip()
+    return _Path(_v) if _v else _REPO_ROOT / default
+
 
 import json
 import os
@@ -18,7 +30,7 @@ from fsot_bridge import FSOTEngine
 
 
 def archive_root() -> Path:
-    return Path(os.environ.get("FSOT_ARCHIVE_ROOT", r"I:\FSOT-Physical-Archive"))
+    return Path(os.environ.get("FSOT_ARCHIVE_ROOT", _os.fspath(_REPO_ROOT / 'data_external/physical_archive')))
 
 
 def lean_hub() -> Path:

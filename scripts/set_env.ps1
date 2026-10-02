@@ -8,7 +8,7 @@ if (-not (Test-Path (Join-Path $Workspace "README.md"))) {
     throw "FSOT LLM workspace not found above $PSScriptRoot"
 }
 
-$ArchiveRoot = if ($env:FSOT_ARCHIVE_ROOT) { $env:FSOT_ARCHIVE_ROOT } else { "I:\FSOT-Physical-Archive" }
+$ArchiveRoot = if ($env:FSOT_ARCHIVE_ROOT) { $env:FSOT_ARCHIVE_ROOT } else { Join-Path $Workspace "data_external\physical_archive" }
 $LeanHub = Join-Path $ArchiveRoot "02_FSOT-2.1-Lean-Full"
 $PublicData = Join-Path $ArchiveRoot "03_FSOT-PublicData"
 $Compute = Join-Path $LeanHub "vendor\fsot_compute.py"
@@ -21,9 +21,9 @@ $env:FSOT_EXTERNAL_DATA_ROOT = $PublicData
 $env:FSOT_ANOMALY_CACHE_ROOT = Join-Path $PublicData "anomaly_observables"
 $env:FSOT_COMPUTE_PATH = $Compute
 
-# External training / SOTA benchmark packs (D: drive)
-$TrainData = if (Test-Path "D:\training data") { "D:\training data" } else { $env:FSOT_TRAINING_DATA_ROOT }
-$BenchRoot = if (Test-Path "D:\FSOT_Benchmarks") { "D:\FSOT_Benchmarks" } else { $env:FSOT_BENCHMARKS_ROOT }
+# External training / SOTA benchmark packs: env vars win, else repo-relative data_external/
+$TrainData = if ($env:FSOT_TRAINING_DATA_ROOT) { $env:FSOT_TRAINING_DATA_ROOT } else { Join-Path $Workspace "data_external\training_data" }
+$BenchRoot = if ($env:FSOT_BENCHMARKS_ROOT) { $env:FSOT_BENCHMARKS_ROOT } else { Join-Path $Workspace "data_external\benchmarks" }
 if ($TrainData) { $env:FSOT_TRAINING_DATA_ROOT = $TrainData }
 if ($BenchRoot) { $env:FSOT_BENCHMARKS_ROOT = $BenchRoot }
 

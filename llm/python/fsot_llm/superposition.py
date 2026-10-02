@@ -382,7 +382,7 @@ def default_fsot_topics() -> list[tuple[TopicFold, list[str]]]:
         (
             TopicFold("archive", "Archive verification", 20.0, 1.0, 0.2, True, ("verification",)),
             [
-                "I:\\FSOT-Physical-Archive is authority. fsot_compute is gold. Failed gates are ledger events.",
+                "$FSOT_ARCHIVE_ROOT is authority. fsot_compute is gold. Failed gates are ledger events.",
             ],
         ),
         (

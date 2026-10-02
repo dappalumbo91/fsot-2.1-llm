@@ -2,7 +2,7 @@
 
 **Ontology:** Fluid Spacetime Omni-Theory (Damian Arthur Palumbo)  
 **Purpose:** Use **industry observables** (papers, open datasets, open training recipes) as *measurement instruments* — then **select and apply** them under FSOT folds. Parameter mass is **not** the intelligence metric.  
-**Authority:** Archive `I:\FSOT-Physical-Archive`; this LLM stack is a local observer in the same medium.  
+**Authority:** Archive `<local folder, not included in repo: FSOT-Physical-Archive>`; this LLM stack is a local observer in the same medium.  
 **Repo:** https://github.com/dappalumbo91/fsot-2.1-llm  
 
 ---
@@ -240,7 +240,7 @@ Evidence: specialized ~1B models + clean SFT can approach large closed models on
 - Rule: measure on **your** emission tasks after quant  
 
 ### FSOT authority
-- `I:\FSOT-Physical-Archive\02_FSOT-2.1-Lean-Full`  
+- `FSOT-2.1-Lean`  
 - `docs/FSOT_LLM_ARCHITECTURE.md`, `docs/FSOT_VERSIONING.md`  
 
 ---

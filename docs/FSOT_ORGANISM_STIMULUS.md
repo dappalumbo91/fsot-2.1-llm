@@ -11,7 +11,7 @@ Understimulated pathways get **targeted FSOT stimuli** — not random hyperparam
 | Organism | Implementation |
 |----------|----------------|
 | Body / skeleton | Fixed K parameter modes (superposition bank) |
-| Senses | Eval suites + D:\\training data packs |
+| Senses | Eval suites + <local folder, not included in repo: training data> packs |
 | Pain signals | Per-pack accuracy, failure modes, confusions |
 | Nervous routing | Topic folds + α modes + linked memory |
 | Stimuli | Curriculum rows + mode-focused LoRA pulses |
@@ -24,7 +24,7 @@ Understimulated pathways get **targeted FSOT stimuli** — not random hyperparam
 
 ```
 eval → diagnose weak pathways → FSOT map (fold + mode)
-    → pull stimuli from D:\training data
+    → pull stimuli from <local folder, not included in repo: training data>
     → stimulate (LoRA pulse) → re-eval → ledger
 ```
 

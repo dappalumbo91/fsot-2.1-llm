@@ -11,14 +11,15 @@ $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 
 # Archive authority first
-$ArchiveEnv = "I:\FSOT-Physical-Archive\set_fsot_archive_env.ps1"
+$ArchiveBase = if ($env:FSOT_ARCHIVE_ROOT) { $env:FSOT_ARCHIVE_ROOT } else { Join-Path $Root "data_external\physical_archive" }
+$ArchiveEnv = Join-Path $ArchiveBase "set_fsot_archive_env.ps1"
 if (Test-Path $ArchiveEnv) {
     # Do not cd away permanently — capture then return
     $here = Get-Location
     . $ArchiveEnv
     Set-Location $here
 } else {
-    Write-Warning "Archive env script missing — is I: mounted?"
+    Write-Warning "Archive env script missing — set FSOT_ARCHIVE_ROOT to your FSOT-Physical-Archive"
 }
 
 . (Join-Path $PSScriptRoot "set_env.ps1")

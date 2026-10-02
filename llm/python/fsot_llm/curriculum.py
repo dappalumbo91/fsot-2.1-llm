@@ -39,7 +39,7 @@ FSOT_SYSTEM = (
 
 def _mix_external_benchmark_rows(max_gsm8k: int = 40, max_he: int = 12) -> list[dict[str, Any]]:
     """
-    Blend real packs from D:\\training data so LoRA keeps general skill
+    Blend real packs from $FSOT_TRAINING_DATA so LoRA keeps general skill
     while learning FSOT (prevents ontology-only collapse).
     """
     rows: list[dict[str, Any]] = []
@@ -301,7 +301,7 @@ def build_curriculum() -> list[dict[str, Any]]:
         )
     )
 
-    # External packs (D:\training data) — general skill retention under FSOT system prompt
+    # External packs ($FSOT_TRAINING_DATA) — general skill retention under FSOT system prompt
     ext = _mix_external_benchmark_rows()
     rows.extend(ext)
 

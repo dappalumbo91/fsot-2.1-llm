@@ -1,5 +1,5 @@
 """
-Run FSOT observer against real packs under D:\\training data.
+Run FSOT observer against real packs under $FSOT_TRAINING_DATA.
 
 Default limits are small for iterative refine; raise with --limit for full runs.
 Always logs to llm/benchmarks/ledgers/ with archive status.
@@ -440,7 +440,7 @@ def run_sota_suite(
         "registry": reg,
         "results": results,
         "fsot_note": (
-            "Scores are refine baselines on external packs under D:\\training data. "
+            "Scores are refine baselines on external packs under $FSOT_TRAINING_DATA. "
             "Archive remains verification authority for FSOT scalars. "
             "Superposition depth: linked topic memory + fixed mode bank."
         ),

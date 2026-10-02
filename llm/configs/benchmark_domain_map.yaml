@@ -3,7 +3,7 @@
 # Routing uses this map; pathway adapters bind to pathway_key.
 
 version: "1.0"
-authority: "I:/FSOT-Physical-Archive + D:/training data packs"
+authority: "$FSOT_ARCHIVE_ROOT + $FSOT_TRAINING_DATA packs"
 rule: >
   Every external benchmark is an observation regime of FSOT.
   Allocate pack → lean_domain + D_eff + pathway_key + emission.
