@@ -5,7 +5,7 @@ fsot:
   medium_dimensions: 25
   seeds: [pi, e, phi, gamma, G_catalan]
   free_parameters: 0
-  authority: "I:/FSOT-Physical-Archive/02_FSOT-2.1-Lean-Full/vendor/fsot_compute.py"
+  authority: "FSOT-2.1-Lean/vendor/fsot_compute.py"
 
 hardware:
   gpu: "NVIDIA GeForce RTX 5070"
