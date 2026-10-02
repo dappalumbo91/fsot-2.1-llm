@@ -1,7 +1,7 @@
 // FSOT 2.1 — C++ scalar core (double precision hot path)
 // Canonical formula mirrors archive vendor/fsot_compute.py compute_scalar.
 // Seeds: π, e, φ, γ, G(Catalan). No free parameters.
-// Gold standard: Python/mpmath in I:\FSOT-Physical-Archive.
+// Gold standard: Python/mpmath in $FSOT_ARCHIVE_ROOT.
 
 #pragma once
 

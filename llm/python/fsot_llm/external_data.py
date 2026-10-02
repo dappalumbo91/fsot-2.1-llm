@@ -1,11 +1,23 @@
 """
 External training / benchmark data registry.
 
-Primary: D:\\training data  (catalog + SOTA packs)
-Secondary: D:\\FSOT_Benchmarks
-Archive: I:\\FSOT-Physical-Archive (verification authority — not replaced)
+Primary: $FSOT_TRAINING_DATA  (catalog + SOTA packs)
+Secondary: $FSOT_BENCHMARKS_ROOT
+Archive: $FSOT_ARCHIVE_ROOT (verification authority — not replaced)
 """
 from __future__ import annotations
+
+import os as _os
+from pathlib import Path as _Path
+
+_REPO_ROOT = _Path(__file__).resolve().parents[3]
+
+
+def _fsot_local_path(env, default):
+    """Local path outside the repo: $env if set, else a path relative to the repo root."""
+    _v = _os.environ.get(env, "").strip()
+    return _Path(_v) if _v else _REPO_ROOT / default
+
 
 import json
 import os
@@ -16,12 +28,12 @@ from typing import Any, Iterator, Optional
 
 
 def training_data_root() -> Path:
-    raw = os.environ.get("FSOT_TRAINING_DATA_ROOT", r"D:\training data")
+    raw = os.environ.get("FSOT_TRAINING_DATA_ROOT", _os.fspath(_REPO_ROOT / 'data_external/training_data'))
     return Path(raw)
 
 
 def fsot_benchmarks_root() -> Path:
-    raw = os.environ.get("FSOT_BENCHMARKS_ROOT", r"D:\FSOT_Benchmarks")
+    raw = os.environ.get("FSOT_BENCHMARKS_ROOT", _os.fspath(_REPO_ROOT / 'data_external/benchmarks'))
     return Path(raw)
 
 

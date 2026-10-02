@@ -8,10 +8,22 @@ operation, examples, common_errors) — the right structure for D_eff≈10
 chain_hash_number: each step cites a rule, then emits #### n.
 
 Default source:
-  C:\\Users\\damia\\Desktop\\Math generator
+  $FSOT_LOCAL_DATA/Math generator
 Override with env FSOT_MATH_GENERATOR_ROOT.
 """
 from __future__ import annotations
+
+import os as _os
+from pathlib import Path as _Path
+
+_REPO_ROOT = _Path(__file__).resolve().parents[3]
+
+
+def _fsot_local_path(env, default):
+    """Local path outside the repo: $env if set, else a path relative to the repo root."""
+    _v = _os.environ.get(env, "").strip()
+    return _Path(_v) if _v else _REPO_ROOT / default
+
 
 import json
 import os
@@ -56,7 +68,7 @@ def math_generator_root() -> Path:
     env = os.environ.get("FSOT_MATH_GENERATOR_ROOT")
     if env:
         return Path(env)
-    return Path(r"C:\Users\damia\Desktop\Math generator")
+    return _fsot_local_path('FSOT_LOCAL_DATA', 'data_external/local') / 'Math generator'
 
 
 def load_rule_document(path: Path) -> dict[str, Any]:

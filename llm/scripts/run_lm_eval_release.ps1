@@ -1,6 +1,6 @@
 # Official-style eval for FSOT release (install once: pip install lm_eval)
 $ErrorActionPreference = "Stop"
-$Model = if ($args[0]) { $args[0] } else { "C:/Users/damia/Desktop/fsot 2.1 llm/llm/models/release/FSOT-2.1-Instruct-0.5B" }
+$Model = if ($args[0]) { $args[0] } else { Join-Path (Split-Path -Parent $PSScriptRoot) "models\release\FSOT-2.1-Instruct-0.5B" }
 $Tasks = if ($args[1]) { $args[1] } else { "mmlu,gsm8k,arc_easy,hellaswag,humaneval_instruct" }
 $Out = Join-Path (Split-Path $Model -Parent) "lm_eval_results"
 New-Item -ItemType Directory -Force -Path $Out | Out-Null

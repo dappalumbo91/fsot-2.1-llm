@@ -14,10 +14,22 @@ Routing still uses domain map (D_eff, pathway_key, emission).
 LTM retrieval is by fold + keyword/tag — not free-parameter embeddings
 as the ontology (optional FTS later).
 
-Default LTM path: D:\\FSOT_LLM_Memory\\fsot_ltm.sqlite (external drive)
+Default LTM path: $FSOT_LLM_MEMORY/fsot_ltm.sqlite (external drive)
 Fallback: llm/data/memory/fsot_ltm.sqlite
 """
 from __future__ import annotations
+
+import os as _os
+from pathlib import Path as _Path
+
+_REPO_ROOT = _Path(__file__).resolve().parents[3]
+
+
+def _fsot_local_path(env, default):
+    """Local path outside the repo: $env if set, else a path relative to the repo root."""
+    _v = _os.environ.get(env, "").strip()
+    return _Path(_v) if _v else _REPO_ROOT / default
+
 
 import argparse
 import json
@@ -40,7 +52,7 @@ def default_ltm_path() -> Path:
     env = os.environ.get("FSOT_LTM_PATH")
     if env:
         return Path(env)
-    d = Path(r"D:\FSOT_LLM_Memory")
+    d = _fsot_local_path('FSOT_LLM_MEMORY', 'data_external/llm_memory')
     try:
         d.mkdir(parents=True, exist_ok=True)
         return d / "fsot_ltm.sqlite"

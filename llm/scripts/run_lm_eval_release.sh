@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-MODEL="${1:-C:/Users/damia/Desktop/fsot 2.1 llm/llm/models/release/FSOT-2.1-Instruct-0.5B}"
+MODEL="${1:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/models/release/FSOT-2.1-Instruct-0.5B}"
 TASKS="${2:-mmlu,gsm8k,arc_easy,hellaswag,humaneval_instruct}"
 OUT="$(dirname "$MODEL")/lm_eval_results"
 mkdir -p "$OUT"
