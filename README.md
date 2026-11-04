@@ -1,5 +1,7 @@
 # FSOT 2.1 LLM
 
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+
 **Fluid Spacetime Omni-Theory as the intrinsic architecture of language models.**
 
 There is no exception: every layer of this project — tokenization, attention, routing, training, evaluation, inference kernels — is an FSOT regime. We do not bolt FSOT onto a generic transformer. We treat the model as a **local observer** in the same 25-dimensional fluid medium that the Lean/Coq/Isabelle/F*/Rust verification stack already closed across 400+ scientific domains.
